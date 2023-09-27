@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
         orderRequest.setCreatedAt(LocalDateTime.now());
         Order order = mapOrderRequestToOrder(orderRequest);
         Order saved = orderRepository.save(order);
-        return ResponseEntity.ok(Map.of("success", true, "order", mapOrderToOrderResponse(order)));
+        return ResponseEntity.ok(Map.of("success", true, "order", mapOrderToOrderResponse(saved)));
     }
 
     @Override
