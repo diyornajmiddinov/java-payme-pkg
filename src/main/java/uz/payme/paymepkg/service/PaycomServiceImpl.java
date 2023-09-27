@@ -32,7 +32,8 @@ public class PaycomServiceImpl implements PaycomService {
 
     @Override
     public ResponseEntity<LinkResponse> generatePayLink(LinkRequest linkRequest) {
-        String params = String.format("m=%s;ac.%s=%s;a=%s;c=%s", PAYME_ID, PAYME_ACCOUNT, linkRequest.getId(), linkRequest.getAmount(), PAYME_CALL_BACK_URL);
+        String params = String.format("m=%s;ac.%s=%s;a=%s;c=%s", PAYME_ID, PAYME_ACCOUNT, linkRequest.getId(),
+                linkRequest.getAmount(), PAYME_CALL_BACK_URL);
         String encode_params = Base64.getEncoder().encodeToString(params.getBytes(StandardCharsets.UTF_8));
         return ResponseEntity.ok(new LinkResponse(String.format("%s/%s", PAYME_URL, encode_params), true));
     }
@@ -92,6 +93,7 @@ public class PaycomServiceImpl implements PaycomService {
                 "PerformTransaction", "PerformTransaction",
                 "CancelTransaction", "CancelTransaction",
                 "CheckTransaction", "CheckTransaction",
+                "StatementResponse", "StatementResponse",
                 "GetStatement", "GetStatement");
         try {
             method = availableMethods.get(incomingMethod);

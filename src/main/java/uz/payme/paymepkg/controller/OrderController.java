@@ -12,9 +12,15 @@ public interface OrderController {
     @GetMapping("/{id}")
     ResponseEntity<?> get(@PathVariable Long id);
 
+    @GetMapping("/by-user/{userId}")
+    ResponseEntity<?> getByUserId(@PathVariable Long userId);
+
     @PutMapping
     ResponseEntity<?> update(@RequestBody OrderRequest orderRequest);
 
     @GetMapping
     ResponseEntity<?> getAll();
+
+    @GetMapping("/by-user/all/{userId}")
+    ResponseEntity<?> getAllByUserId(@PathVariable Long userId);
 }

@@ -9,6 +9,7 @@ import uz.payme.paymepkg.entity.Order;
 import uz.payme.paymepkg.exception.exceptions.transaction.IncorrectAmountException;
 import uz.payme.paymepkg.exception.exceptions.transaction.PerformTransactionDoesNotExistException;
 import uz.payme.paymepkg.exception.exceptions.transaction.TooManyRequestsException;
+import uz.payme.paymepkg.model.StatementResponse;
 import uz.payme.paymepkg.model.ReturnObject;
 import uz.payme.paymepkg.model.TransactionResponse;
 import uz.payme.paymepkg.repository.OrderRepository;
@@ -17,9 +18,7 @@ import uz.payme.paymepkg.util.Serializer;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -146,6 +145,44 @@ public class TransactionServiceImpl implements TransactionService {
         return new ReturnObject(orderId.toString(), transactionResponse);
     }
 
+    @Override
+    @Transactional
+    public ReturnObject getStatement(HashMap<String, Object> params) {
+        HashMap<String, Object> validateData = serializer.getValidateData(params);
+        long from = Long.parseLong(validateData.get("startDate").toString());
+        long to = Long.parseLong(validateData.get("endDate").toString());
+        List<MerchantTransaction> dbTransactions =
+                transactionRepository.findAll();
+        List<StatementResponse> transactions = sortTransactions(from, to, dbTransactions);
+        TransactionResponse transactionResponse = new TransactionResponse(transactions);
+        return new ReturnObject(null, transactionResponse);
+    }
+
+    private List<StatementResponse> sortTransactions(long from, long to, List<MerchantTransaction> dbTransactions) {
+        List<StatementResponse> transactions = new ArrayList<>();
+        for (MerchantTransaction transaction : dbTransactions) {
+            if (Long.parseLong(transaction.getCreatedAtMs()) >= from &&
+                    Long.parseLong(transaction.getCreatedAtMs()) <= to) {
+
+                transactions.add(transactionToStatementResponse(transaction));
+            }
+        }
+        return transactions;
+    }
+
+    private StatementResponse transactionToStatementResponse(MerchantTransaction transaction) {
+        return new StatementResponse(
+                transaction.getId(),
+                transaction.getTime(),
+                transaction.getAmount(),
+                Long.valueOf(transaction.getCreatedAtMs()),
+                transaction.getPerformTime(),
+                transaction.getCancelTime(),
+                transaction.getTransactionId(),
+                transaction.getState(),
+                transaction.getReason()
+        );
+    }
 
 
     private MerchantTransaction createMerchantTransaction(Long orderId, String id, Float amount) {

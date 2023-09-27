@@ -33,27 +33,17 @@ public class TransactionController {
             HashMap<String, Object> params = request.getParams();
             System.out.println(params);
             switch (method) {
-                case "CheckPerformTransaction":
-                    response = transactionService.checkPerformTransaction(params);
-                    break;
-                case "CreateTransaction":
-                    response = transactionService.createTransaction(params);
-                    break;
-                case "PerformTransaction":
-                    response = transactionService.performTransaction(params);
-                    break;
-                case "CancelTransaction":
-                    response = transactionService.cancelTransaction(params);
-                    break;
-                case "CheckTransaction":
-                    response = transactionService.checkTransaction(params);
-                    break;
-                case "GetStatement":
-                    break;
+                case "CheckPerformTransaction" -> response = transactionService.checkPerformTransaction(params);
+                case "CreateTransaction" -> response = transactionService.createTransaction(params);
+                case "PerformTransaction" -> response = transactionService.performTransaction(params);
+                case "CancelTransaction" -> response = transactionService.cancelTransaction(params);
+                case "CheckTransaction" -> response = transactionService.checkTransaction(params);
+                case "GetStatement" -> response = transactionService.getStatement(params);
             }
         }
         switch (method) {
             case "CreateTransaction":
+
                 break;
             case "PerformTransaction":
                 break;

@@ -23,6 +23,11 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
+    public ResponseEntity<?> getByUserId(Long userId) {
+        return orderService.getByUserId(userId);
+    }
+
+    @Override
     public ResponseEntity<?> update(OrderRequest orderRequest) {
         return orderService.update(orderRequest);
     }
@@ -30,5 +35,10 @@ public class OrderControllerImpl implements OrderController {
     @Override
     public ResponseEntity<?> getAll() {
         return orderService.getAll();
+    }
+
+    @Override
+    public ResponseEntity<?> getAllByUserId(Long userId) {
+        return orderService.getAllByUserId(userId);
     }
 }

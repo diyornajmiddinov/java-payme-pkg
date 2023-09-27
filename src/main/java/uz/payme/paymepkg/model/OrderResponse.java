@@ -17,6 +17,6 @@ public class OrderResponse {
     private LocalDateTime createdAt;
     @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
-
-
+    @JsonProperty("user_id")
+    private Long userId;
 }

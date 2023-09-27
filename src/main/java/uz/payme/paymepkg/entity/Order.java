@@ -27,11 +27,13 @@ public class Order {
 
     private LocalDateTime updatedAt;
 
-    public Order(Integer amount, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    private Long userId;
+
+    public Order(Integer amount,Long userId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.amount = amount;
+        this.userId = userId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
 
 }

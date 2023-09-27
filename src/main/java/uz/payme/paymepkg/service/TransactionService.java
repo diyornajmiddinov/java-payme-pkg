@@ -12,7 +12,8 @@ public interface TransactionService {
     ReturnObject checkTransaction(HashMap<String, Object> params);
 
     ReturnObject performTransaction(HashMap<String, Object> params);
+
     ReturnObject createTransaction(HashMap<String, Object> params);
 
-
+    ReturnObject getStatement(HashMap<String, Object> params);
 }
