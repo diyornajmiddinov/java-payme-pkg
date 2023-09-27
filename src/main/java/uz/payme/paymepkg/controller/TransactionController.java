@@ -47,7 +47,7 @@ public class TransactionController {
             case "CreateTransaction":
                 break;
             case "PerformTransaction":
-                successfulOrderService.add(response.getId());
+                successfulOrderService.sendPostRequestToBot(response.getId());
                 break;
             case "CancelTransaction":
                 break;
