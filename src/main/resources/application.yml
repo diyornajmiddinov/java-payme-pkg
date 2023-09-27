@@ -18,7 +18,7 @@ spring:
 
 payme:
   id: 64d381a275b7ebd897177498
-  key: qqukMeDCVk@wR3nG4F#W#M5ZdwVHsyNnAEPs
+  key: nsoVHFesiBdQf3@nD0FGAsbQo&ozAuOzwxOQ
   url: https://checkout.paycom.uz
   call-back-url: http://91.186.197.205/api/payments/merchant
   min-amount: 1000
