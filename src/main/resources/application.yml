@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/learn
+    url: jdbc:postgresql://localhost:5432/payme
     password:
     username:
   jpa:
@@ -18,8 +18,8 @@ spring:
 
 payme:
   id: 64d381a275b7ebd897177498
-  key: qqukMeDCVk@wR3nG4F#W#M5ZdwVHsyNnAEPs
+  key: nsoVHFesiBdQf3@nD0FGAsbQo&ozAuOzwxOQ
   url: https://checkout.paycom.uz
   call-back-url: https://7013-2a0d-5600-8-6001-00-4d24.ngrok-free.app/payments/merchant
-  min-amount: 0
+  min-amount: 1000
   account: order_id

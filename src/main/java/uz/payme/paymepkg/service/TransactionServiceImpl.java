@@ -109,9 +109,10 @@ public class TransactionServiceImpl implements TransactionService {
         TransactionResponse transactionResponse = new TransactionResponse(
                 transaction.getPerformTime(),
                 transaction.getTransactionId(),
-                transaction.getState()
+                transaction.getState(),
+                transaction.getId()
         );
-        return new ReturnObject(transactionId, transactionResponse);
+        return new ReturnObject(transaction.getId(), transactionResponse);
     }
 
     @Override
@@ -142,7 +143,7 @@ public class TransactionServiceImpl implements TransactionService {
         );
 
 
-        return new ReturnObject(orderId.toString(), transactionResponse);
+        return new ReturnObject(transaction.getId(), transactionResponse);
     }
 
     @Override

@@ -2,36 +2,38 @@ package uz.payme.paymepkg.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import uz.payme.paymepkg.model.TransactionRequest;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import uz.payme.paymepkg.model.ReturnObject;
+import uz.payme.paymepkg.model.TransactionRequest;
 import uz.payme.paymepkg.model.TransactionResponse;
 import uz.payme.paymepkg.service.PaycomService;
+import uz.payme.paymepkg.service.SuccessfulOrderService;
 import uz.payme.paymepkg.service.TransactionService;
-import uz.payme.paymepkg.util.ParamUtil;
 
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("/payments/merchant")
+@RequestMapping("/api/payments/merchant")
 @RequiredArgsConstructor
 public class TransactionController {
-
-    private final ParamUtil paramUtil;
 
     private final PaycomService paycomService;
 
     private final TransactionService transactionService;
 
+    private final SuccessfulOrderService successfulOrderService;
+
     @PostMapping
-    public TransactionResponse post(@RequestBody TransactionRequest request, HttpServletRequest httpRequest) throws Exception {
+    public TransactionResponse post(@RequestBody TransactionRequest request, HttpServletRequest httpRequest){
         String method = "";
         ReturnObject response = null;
         String password = httpRequest.getHeader("Authorization");
         if (paycomService.authorize(password)) {
             method = paycomService.getPaycomMethodByName(request.getMethod());
             HashMap<String, Object> params = request.getParams();
-            System.out.println(params);
             switch (method) {
                 case "CheckPerformTransaction" -> response = transactionService.checkPerformTransaction(params);
                 case "CreateTransaction" -> response = transactionService.createTransaction(params);
@@ -43,9 +45,9 @@ public class TransactionController {
         }
         switch (method) {
             case "CreateTransaction":
-
                 break;
             case "PerformTransaction":
+                successfulOrderService.add(response.getId());
                 break;
             case "CancelTransaction":
                 break;

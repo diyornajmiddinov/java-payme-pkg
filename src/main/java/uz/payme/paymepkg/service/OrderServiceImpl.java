@@ -3,14 +3,13 @@ package uz.payme.paymepkg.service;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import uz.payme.paymepkg.entity.MerchantTransaction;
 import uz.payme.paymepkg.entity.Order;
 import uz.payme.paymepkg.exception.exceptions.order.OrderNotFoundException;
 import uz.payme.paymepkg.model.OrderRequest;
 import uz.payme.paymepkg.model.OrderResponse;
-import uz.payme.paymepkg.model.StatementResponse;
 import uz.payme.paymepkg.repository.OrderRepository;
 import uz.payme.paymepkg.repository.TransactionRepository;
+import uz.payme.paymepkg.util.ParamUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,12 +22,13 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final TransactionRepository transactionRepository;
+    private final ParamUtil paramUtil;
 
     @Override
     public ResponseEntity<?> add(OrderRequest orderRequest) {
         orderRequest.setCreatedAt(LocalDateTime.now());
         Order order = mapOrderRequestToOrder(orderRequest);
+        order.setAmount(paramUtil.to_tiyn(order.getAmount()));
         Order saved = orderRepository.save(order);
         return ResponseEntity.ok(Map.of("success", true, "order", mapOrderToOrderResponse(saved)));
     }
@@ -62,13 +62,6 @@ public class OrderServiceImpl implements OrderService {
         return ResponseEntity.ok(mapOrderListToOrderResponseList(orders));
     }
 
-    @Override
-    public ResponseEntity<?> getSuccessfulOrder(Long id) {
-        MerchantTransaction transaction = transactionRepository.findByOrderIdSuccessful(id)
-                .orElseThrow(() -> new OrderNotFoundException("Order doesn't exist!"));
-        return ResponseEntity.ok(Map.of("success", true, "transaction", transactionToStatementResponse(transaction)));
-    }
-
     private Object mapOrderListToOrderResponseList(List<Order> orders) {
         List<OrderResponse> orderResponses = new ArrayList<>();
         for (Order order : orders) {
@@ -83,19 +76,5 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderResponse mapOrderToOrderResponse(Order order) {
         return new OrderResponse(order.getId(), order.getAmount(), order.getCreatedAt(), order.getUpdatedAt(), order.getUserId());
-    }
-
-    private StatementResponse transactionToStatementResponse(MerchantTransaction transaction) {
-        return new StatementResponse(
-                transaction.getId(),
-                transaction.getTime(),
-                transaction.getAmount(),
-                Long.valueOf(transaction.getCreatedAtMs()),
-                transaction.getPerformTime(),
-                transaction.getCancelTime(),
-                transaction.getTransactionId(),
-                transaction.getState(),
-                transaction.getReason()
-        );
     }
 }

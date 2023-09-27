@@ -16,6 +16,4 @@ public interface OrderService {
     ResponseEntity<?> getAll();
 
     ResponseEntity<?> getAllByUserId(Long userId);
-
-    ResponseEntity<?> getSuccessfulOrder(Long id);
 }

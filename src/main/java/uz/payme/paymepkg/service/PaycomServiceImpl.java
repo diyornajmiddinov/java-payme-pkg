@@ -1,5 +1,6 @@
 package uz.payme.paymepkg.service;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,14 +10,18 @@ import uz.payme.paymepkg.exception.exceptions.transaction.MethodNotFoundExceptio
 import uz.payme.paymepkg.exception.exceptions.transaction.PermissionDeniedException;
 import uz.payme.paymepkg.model.LinkRequest;
 import uz.payme.paymepkg.model.LinkResponse;
+import uz.payme.paymepkg.util.ParamUtil;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class PaycomServiceImpl implements PaycomService {
     private final Logger log = LoggerFactory.getLogger(Service.class);
+
+    private final ParamUtil paramUtil;
 
     @Value("${payme.key}")
     private String PAYME_KEY;
@@ -33,7 +38,7 @@ public class PaycomServiceImpl implements PaycomService {
     @Override
     public ResponseEntity<LinkResponse> generatePayLink(LinkRequest linkRequest) {
         String params = String.format("m=%s;ac.%s=%s;a=%s;c=%s", PAYME_ID, PAYME_ACCOUNT, linkRequest.getId(),
-                linkRequest.getAmount(), PAYME_CALL_BACK_URL);
+                paramUtil.to_tiyn(linkRequest.getAmount()), PAYME_CALL_BACK_URL);
         String encode_params = Base64.getEncoder().encodeToString(params.getBytes(StandardCharsets.UTF_8));
         return ResponseEntity.ok(new LinkResponse(String.format("%s/%s", PAYME_URL, encode_params), true));
     }

@@ -34,8 +34,16 @@ public class ParamUtil {
 
     }
 
-    public Integer getOrderId(HashMap<String, Object> params){
+    public Integer getOrderId(HashMap<String, Object> params) {
         return (Integer) getParams(params).get("orderId");
+    }
+
+    public Integer to_tiyn(Integer sum) {
+        return sum * 100;
+    }
+
+    public Integer to_sum(Integer sum) {
+        return sum / 100;
     }
 
 }

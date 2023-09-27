@@ -3,7 +3,6 @@ package uz.payme.paymepkg.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
-import uz.payme.paymepkg.entity.MerchantTransaction;
 import uz.payme.paymepkg.model.results.*;
 
 import java.io.Serializable;
@@ -29,8 +28,8 @@ public class TransactionResponse implements Serializable {
         result = new CheckPerformTransactionResponse(allow);
     }
 
-    public TransactionResponse(Long performTime, String transactionId, Integer state) {
-        result = new PerformTransactionResponse(performTime, transactionId, state);
+    public TransactionResponse(Long performTime, String transactionId, Integer state,String id) {
+        result = new PerformTransactionResponse(performTime, transactionId, state, id);
     }
 
     public TransactionResponse(String createTime, String transactionId, Integer state) {

@@ -41,9 +41,4 @@ public class OrderControllerImpl implements OrderController {
     public ResponseEntity<?> getAllByUserId(Long userId) {
         return orderService.getAllByUserId(userId);
     }
-
-    @Override
-    public ResponseEntity<?> getSuccessfulOrder(Long id) {
-        return orderService.getSuccessfulOrder(id);
-    }
 }

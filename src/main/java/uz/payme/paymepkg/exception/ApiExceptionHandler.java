@@ -67,7 +67,6 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> exceptionHandler(OrderNotFoundException e) {
         HttpStatus httpStatus = HttpStatus.valueOf(HttpStatus.NOT_FOUND.value());
         Map<String, Object> error = Map.of("message", e.getMessage());
-        ApiException apiException = new ApiException(error);
-        return new ResponseEntity<>(apiException, httpStatus);
+        return new ResponseEntity<>(Map.of("error",error,"success",false), httpStatus);
     }
 }

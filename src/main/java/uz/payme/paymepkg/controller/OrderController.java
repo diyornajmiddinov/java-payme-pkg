@@ -23,6 +23,4 @@ public interface OrderController {
 
     @GetMapping("/by-user/all/{userId}")
     ResponseEntity<?> getAllByUserId(@PathVariable Long userId);
-    @GetMapping("/successful/{id}")
-    ResponseEntity<?> getSuccessfulOrder(@PathVariable Long id);
 }
